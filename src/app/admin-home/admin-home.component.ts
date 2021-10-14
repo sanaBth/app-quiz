@@ -37,7 +37,7 @@ export class AdminHomeComponent implements OnInit {
 
   addQuestion()
   {
-      this.questions().push(new FormGroup({
+    this.questions().push(new FormGroup({
         textQuestion:new FormControl(''),
         suggestions:new FormArray([])
       })) 

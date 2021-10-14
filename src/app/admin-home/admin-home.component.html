@@ -33,7 +33,7 @@
     </div>
     <div formArrayName="questions">
       <div *ngFor="let quest of questions().controls; let i = index">
-        <div class="row">
+        <div [formGroupName]="i" class="row">
           <div class="border mt-2 mb-2">
             <div class="col-md-9">
               <h3>La bonne réponse est : {{ reponseCorrect }}</h3>
