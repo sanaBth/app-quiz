@@ -22,8 +22,6 @@ export class AdminHomeComponent implements OnInit {
     ({
       titreQuizz:new FormControl('',Validators.required),
       questions: new FormArray([]),
-     
-    //      suggestion:new FormArray([new FormControl('',Validators.required)])
     })
   }
   suggestions(Qindex:number)
@@ -43,17 +41,13 @@ export class AdminHomeComponent implements OnInit {
       })) 
       
   }
-  removeSuggestion()
+  removeSuggestion(i:number,j:number)
   {
-   // this.suggestions().removeAt(this.suggestion.length-1);
+    this.suggestions(i).removeAt(j);
   }
   addSuggestion(i:number)
   {
-/* this.suggestions(i).push(
-  new FormArray([
-    suggestion : new FormControl(''),
-  ])
-  ) */
+    this.suggestions(i).push(new FormControl(''))
   } 
   correctResponse()
   {
