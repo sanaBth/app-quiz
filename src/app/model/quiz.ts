@@ -2,17 +2,20 @@ export class Quiz
 {
     id:number=0;
     quizzTitle:string;
-    //theme:string;
-    question :[]
-    suggestion:[]
-   
-    reponse :number
-    constructor(question :[],suggestion : [],reponse:number)
+    questions :[Question]
+    constructor(questions :[Question],quizzTitle : string)
     {
+
         this.id=this.id++;
-        this.question=question;
-        this.suggestion=suggestion;
-        this.reponse=reponse;
+        this.questions=questions;
+        this.quizzTitle=quizzTitle;
     }
 
+}
+
+export class Question 
+{
+    textQuestion:string;
+    indexOfBonneReponse : number; 
+     suggestions : [string];
 }

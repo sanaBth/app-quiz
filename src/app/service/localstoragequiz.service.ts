@@ -18,7 +18,7 @@ export class LocalstoragequizService {
     localStorage.setItem('Quiz',JSON.stringify(this.questions));
   
   }
-  getQuiz()
+  getQuiz(): Quiz[]
   {
    
     return JSON.parse(localStorage.getItem('Quiz') || '[]');

@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <form [formGroup]="postForm">
+  <form [formGroup]="postForm" (ngSubmit)="newElement()">
     <div class="class-form mt-2 mb-2">
       <label>Titre Quiz</label>
       <input
@@ -36,7 +36,10 @@
         <div [formGroupName]="i" class="row">
           <div class="border mt-2 mb-2">
             <div class="col-md-9">
-              <h3>La bonne réponse est : {{ quest.value | json }}</h3>
+              <h3>
+                La bonne réponse est :
+                {{ quest.value.suggestions[quest.value.indexOfBonneReponse] }}
+              </h3>
 
               <div class="">
                 <label>Question</label>
@@ -120,21 +123,20 @@
                     </div>
                   </div>
                 </div>
-                <p class="text-center">
-                  <button
-                    type="submit"
-                    class="text-center btn btn-primary"
-                    [disabled]="!postForm.valid"
-                    (click)="newElement()"
-                  >
-                    add
-                  </button>
-                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <p class="text-center">
+      <button
+        type="submit"
+        class="text-center btn btn-primary"
+        [disabled]="!postForm.valid"
+      >
+        add
+      </button>
+    </p>
   </form>
 </div>

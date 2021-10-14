@@ -53,20 +53,19 @@ export class AdminHomeComponent implements OnInit {
   correctResponse(i:number,j:number)
   {
     this.oneQuestion(i).patchValue({indexOfBonneReponse: j})
-    console.log({i,j});
   }
   
   newElement()
   {
-   /*  if (this.reponseCorrect != '')
-    {
-      const quiz = new Quiz(this.postForm.controls.question.value,suggestions(),this.correctresponse)
+    
+      const quiz = new Quiz(this.postForm.controls.questions.value,this.postForm.controls.titreQuizz.value)
+      console.log(quiz);
     this._quizservice.storeOnLocalStorage(quiz);
    // this.postForm.controls.reset
-    }else{
-      this.toastr.success('Veuillez valider la réponse correcte');
+   
+      this.toastr.success('Bonne reponse valide');
       //alert("Veuillez valider la réponse correcte");
-    }*/
+    
   } 
 }
 function question(question: any, arg1: FormControl) {
