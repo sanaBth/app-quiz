@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Quiz } from '../model/quiz';
+import { LocalstoragequizService } from '../service/localstoragequiz.service';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  constructor() { }
+  public quizs : Quiz[] =[];
+  constructor(private _quizService : LocalstoragequizService) { }
 
   ngOnInit(): void {
+    this.quizs=this._quizService.getQuiz();
   }
 
 }

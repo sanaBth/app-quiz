@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators,FormArray } from '@angular/forms';
 import { Quiz } from '../model/quiz';
 import { LocalstoragequizService } from '../service/localstoragequiz.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-home',
@@ -10,40 +11,70 @@ import { LocalstoragequizService } from '../service/localstoragequiz.service';
 })
 export class AdminHomeComponent implements OnInit {
 
-  constructor(private _quizservice:LocalstoragequizService) { }
+  constructor(private _quizservice:LocalstoragequizService,private toastr: ToastrService) { }
   postForm : FormGroup;
   reponseCorrect : string =''
   correctresponse : number;
+  question:string;
+  
   ngOnInit(): void {
     this.postForm = new FormGroup
     ({
-      question: new FormControl('',Validators.required),
+      titreQuizz:new FormControl('',Validators.required),
+      questions: new FormArray([]),
      
-      suggestion:new FormArray([new FormControl('',Validators.required)])
-      
+    //      suggestion:new FormArray([new FormControl('',Validators.required)])
     })
   }
-  get suggestion()
+  suggestions(Qindex:number)
   {
-    return this.postForm.get('suggestion') as FormArray;
+    return this.questions().at(Qindex).get('suggestions') as FormArray;
   }
-  addSuggestion()
+  questions()
   {
-  this.suggestion.push(new FormControl(''))
+    return this.postForm.get('questions') as FormArray;
   }
-  correctResponse(i:number)
+
+  addQuestion()
   {
-    this.correctresponse= i;
-    this.reponseCorrect = this.suggestion.value[i]
+      this.questions().push(new FormGroup({
+        textQuestion:new FormControl(''),
+        suggestions:new FormArray([])
+      })) 
+      
   }
+  removeSuggestion()
+  {
+   // this.suggestions().removeAt(this.suggestion.length-1);
+  }
+  addSuggestion(i:number)
+  {
+/* this.suggestions(i).push(
+  new FormArray([
+    suggestion : new FormControl(''),
+  ])
+  ) */
+  } 
+  correctResponse()
+  {
+  /*   this.correctresponse= i;
+    this.reponseCorrect = this.suggestion.value[i] */
+  }
+  
   newElement()
   {
-    if (this.reponseCorrect != '')
+   /*  if (this.reponseCorrect != '')
     {
-      const quiz = new Quiz(this.postForm.controls.question.value,this.suggestion.value,this.correctresponse)
+      const quiz = new Quiz(this.postForm.controls.question.value,suggestions(),this.correctresponse)
     this._quizservice.storeOnLocalStorage(quiz);
+   // this.postForm.controls.reset
     }else{
-      alert("Veuillez valider la réponse correcte");
-    }
-  }
+      this.toastr.success('Veuillez valider la réponse correcte');
+      //alert("Veuillez valider la réponse correcte");
+    }*/
+  } 
 }
+function question(question: any, arg1: FormControl) {
+  throw new Error('Function not implemented.');
+}
+
