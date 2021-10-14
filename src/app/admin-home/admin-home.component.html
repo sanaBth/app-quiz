@@ -36,7 +36,7 @@
         <div [formGroupName]="i" class="row">
           <div class="border mt-2 mb-2">
             <div class="col-md-9">
-              <h3>La bonne réponse est : {{ reponseCorrect }}</h3>
+              <h3>La bonne réponse est : {{ quest.value | json }}</h3>
 
               <div class="">
                 <label>Question</label>
@@ -84,7 +84,7 @@
                       <button
                         type="button"
                         class="btn btn-success mx-2"
-                        (click)="correctResponse()"
+                        (click)="correctResponse(i, j)"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

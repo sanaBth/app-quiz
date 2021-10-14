@@ -13,9 +13,6 @@ export class AdminHomeComponent implements OnInit {
 
   constructor(private _quizservice:LocalstoragequizService,private toastr: ToastrService) { }
   postForm : FormGroup;
-  reponseCorrect : string =''
-  correctresponse : number;
-  question:string;
   
   ngOnInit(): void {
     this.postForm = new FormGroup
@@ -32,14 +29,18 @@ export class AdminHomeComponent implements OnInit {
   {
     return this.postForm.get('questions') as FormArray;
   }
+  oneQuestion(i:number)
+  {
+      return this.questions().at(i) as FormGroup;
+  }
 
   addQuestion()
   {
     this.questions().push(new FormGroup({
         textQuestion:new FormControl(''),
+        indexOfBonneReponse : new FormControl(null),
         suggestions:new FormArray([])
       })) 
-      
   }
   removeSuggestion(i:number,j:number)
   {
@@ -49,10 +50,10 @@ export class AdminHomeComponent implements OnInit {
   {
     this.suggestions(i).push(new FormControl(''))
   } 
-  correctResponse()
+  correctResponse(i:number,j:number)
   {
-  /*   this.correctresponse= i;
-    this.reponseCorrect = this.suggestion.value[i] */
+    this.oneQuestion(i).patchValue({indexOfBonneReponse: j})
+    console.log({i,j});
   }
   
   newElement()
