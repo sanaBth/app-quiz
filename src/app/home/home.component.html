@@ -17,17 +17,30 @@
 </section>
 <div class="container marketing">
   <div class="row">
-    <div class="col-lg-4" *ngFor="let quiz of quizs">
-      <h2>Titre de quiz : {{ quiz.quizzTitle }}</h2>
+    <div class="col-lg-4" *ngFor="let quiz of quizs; let z = index">
+      <h2 class="mx-2">Titre de quiz : {{ quiz.quizzTitle }}</h2>
 
       <div *ngFor="let question of quiz.questions; let i = index">
-        <h4>La question est : {{ question.textQuestion }}</h4>
+        <h4 class="my-3">La question est : {{ question.textQuestion }}</h4>
         <div>
-          liste des propositions
           <div *ngFor="let suggestion of question.suggestions; let j = index">
-            <input type="radio" [name]="i" />{{ suggestion }}<br />
+            <input
+              (change)="check($event, z, i, j)"
+              class="my-2"
+              type="radio"
+              [name]="i"
+            />&nbsp;{{ suggestion }}<br />
           </div>
         </div>
+      </div>
+      <div class="float-right">
+        <button
+          type="button"
+          (click)="validSubmit(z)"
+          class="btn btn-success my-4"
+        >
+          Valider
+        </button>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {  FormGroup} from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Quiz } from '../model/quiz';
 import { LocalstoragequizService } from '../service/localstoragequiz.service';
 
@@ -10,43 +11,55 @@ import { LocalstoragequizService } from '../service/localstoragequiz.service';
 })
 export class HomeComponent implements OnInit {
   public quizs : Quiz[] =[];
-  constructor(private _quizService : LocalstoragequizService) { }
-  formQuiz : FormGroup;
+ // clicked = false;
+  constructor(private _quizService : LocalstoragequizService, private toastr: ToastrService) { }
+  quizForm : FormGroup;
 
   ngOnInit(): void {
     this.quizs=this._quizService.getQuiz();
-    this.formQuiz = new FormGroup
-    ({
-   
-        questions: new FormArray([new FormGroup({
-        
-        indexOfBonneReponse : new FormControl(null),
-        listSugg:new FormArray([])
-      })])
-    })
-   
+    
           
-    const lengQuestion = this.questions().length ;
-    for(let i=0; i< lengQuestion; i++)
-    {
-      const listSug = this.oneQuestion(i).get('listSugg');
+   
+    }
+  
+  check(e:any,z:number, i :number, j:number)
+  {
+    this.quizs[z].questions[i].indexOfUserReponse=j;
+  
+//console.log(this.quizs[z].questions[i]);
+  }
+  validSubmit(z:number)
+  {
+    let score = 0;
+    let ok = true;
+    let sommeQuestion =  this.quizs[z].questions.length;
+    this.quizs[z].questions.every(question=>{
+      console.log(question.indexOfUserReponse);
+     if(question.indexOfUserReponse !== undefined ) 
+     {
+      if (question.indexOfBonneReponse == question.indexOfUserReponse)
+      {
+        score+=1;
+      }
       
-    }
-    }
-  questions()
-  {
-    return this.formQuiz.get('questions') as FormArray;
-  }
-  listSugg(Qindex:number)
-  {
-    return this.questions().at(Qindex).get('listSugg') as FormArray;
-  }
-  oneQuestion(i:number)
-  {
-      return this.questions().at(i) as FormGroup;
-  }
-  validQuizz()
-  {
+      
+     } else 
+      {
+        this.toastr.warning('Veuillez répondre à toutes les questions');
+       ok = false;
+       return false
+      }
+    
+    console.log(ok);
+    return true
+    })
+    if (ok)
+    {
+      this.toastr.success(`Votre score est : ${score}/${sommeQuestion}`);
+      console.log(`Votre score est : ${score}/${sommeQuestion}`);
 
-  }
-}
+    }
+      
+    
+    
+  }}

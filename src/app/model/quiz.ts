@@ -18,4 +18,5 @@ export class Question
     textQuestion:string;
     indexOfBonneReponse : number; 
      suggestions : [string];
+    indexOfUserReponse : number
 }
