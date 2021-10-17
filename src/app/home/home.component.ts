@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {  FormGroup} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Quiz } from '../model/quiz';
 import { LocalstoragequizService } from '../service/localstoragequiz.service';
@@ -13,7 +12,6 @@ export class HomeComponent implements OnInit {
   public quizs : Quiz[] =[];
  // clicked = false;
   constructor(private _quizService : LocalstoragequizService, private toastr: ToastrService) { }
-  quizForm : FormGroup;
 
   ngOnInit(): void {
     this.quizs=this._quizService.getQuiz();
