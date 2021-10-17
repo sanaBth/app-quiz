@@ -11,16 +11,34 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AdminHomeComponent implements OnInit {
 
-  constructor(private _quizservice:LocalstoragequizService,private toastr: ToastrService) { }
+  constructor(private _quizservice:LocalstoragequizService,
+    private toastr: ToastrService,
+) { }
   postForm : FormGroup;
-  
+
+ 
   ngOnInit(): void {
     this.postForm = new FormGroup
     ({
       titreQuizz:new FormControl('',Validators.required),
-      questions: new FormArray([]),
+      questions: new FormArray([new FormGroup({
+        textQuestion:new FormControl('',Validators.required),
+        indexOfBonneReponse : new FormControl(null),
+        suggestions:new FormArray([new FormControl('',Validators.required)])
+      })]),
     })
   }
+  questionError(i:number) {  
+      const question = this.questions().at(i).get('textQuestion') ;  
+      //console.log(question);  
+     return question?.touched && question?.hasError('required');
+   
+}
+errorSugg(i:number,j:number) {  
+ const sugg = this.suggestions(i).at(j);    
+ //console.log(sugg);
+  return sugg?.touched && sugg?.hasError('required'); 
+}
   suggestions(Qindex:number)
   {
     return this.questions().at(Qindex).get('suggestions') as FormArray;
@@ -38,7 +56,7 @@ export class AdminHomeComponent implements OnInit {
   {
     this.questions().push(new FormGroup({
         textQuestion:new FormControl(''),
-        indexOfBonneReponse : new FormControl(null),
+        indexOfBonneReponse   : new FormControl(null),
         suggestions:new FormArray([])
       })) 
   }
@@ -51,21 +69,66 @@ export class AdminHomeComponent implements OnInit {
     this.suggestions(i).push(new FormControl(''))
   } 
   correctResponse(i:number,j:number)
-  {
-    this.oneQuestion(i).patchValue({indexOfBonneReponse: j})
+  {  
+   const sugg = this.suggestions(i).at(j);   
+    if (!sugg?.hasError('required'))
+    {
+      this.oneQuestion(i).patchValue({indexOfBonneReponse: j})
+    }
+    else{
+      this.toastr.warning('veuillez remplir ce champs');
+    }
   }
-  
+  verifyChecked(i:number,j:number)
+  {
+      const bonneReponseIndex = this.questions().at(i).get('indexOfBonneReponse') ;  
+    if (bonneReponseIndex?.value == null )
+    {
+      return true;
+    }
+    else 
+    if (bonneReponseIndex?.value == j)
+     {
+      return false;
+    }
+    else{
+      return true
+    }
+  }
+
+  verifierCheckedReponse()
+  {
+    const lengQuestion = this.questions().length ;
+    for(let i=0; i< lengQuestion; i++)
+    {
+      const indexOf = this.oneQuestion(i).get('indexOfBonneReponse');
+    // console.log(indexOf);
+    if (indexOf?.value == null)
+    {
+    
+      return i;
+    }
+    
+    }
+    return -1;
+     
+  }
   newElement()
   {
-    
+    const verif = this.verifierCheckedReponse()
+    console.log(verif);
+    if (verif == -1)
+    {
       const quiz = new Quiz(this.postForm.controls.questions.value,this.postForm.controls.titreQuizz.value)
-      console.log(quiz);
+     
     this._quizservice.storeOnLocalStorage(quiz);
-   // this.postForm.controls.reset
-   
-      this.toastr.success('Bonne reponse valide');
-      //alert("Veuillez valider la réponse correcte");
-    
+  
+   this.toastr.success('Quizz ajoutée');
+    }
+    else
+    {
+      this.toastr.error(`Veuillez cocher la reponse correcte du question N ${verif+1}` );
+    }
   } 
 }
 function question(question: any, arg1: FormControl) {

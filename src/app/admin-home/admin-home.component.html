@@ -49,8 +49,11 @@
                   id="myInput"
                   class="form-control"
                   formControlName="textQuestion"
+                  required
                 />
-                <!--  <div class="text-info" *ngIf ="postForm.questions && postForm.questions.invalid && postForm.questions.touched">Ce champs est obligatoire</div> -->
+                <div class="text-info" *ngIf="questionError(i)">
+                  Ce champs est obligatoire
+                </div>
               </div>
 
               <div class="form-floating mt-3">
@@ -60,19 +63,8 @@
                   class="btn btn-secondary btn-sm mt-5 ml-5"
                   (click)="addSuggestion(i)"
                 >
-                  add suggestion
+                  Add suggestion
                 </button>
-
-                <div
-                  class="text-info"
-                  *ngIf="
-                    postForm.controls.suggestion &&
-                    postForm.controls.suggestion.invalid &&
-                    postForm.controls.suggestion.touched
-                  "
-                >
-                  Ce champs est obligatoire
-                </div>
 
                 <div formArrayName="suggestions">
                   <div
@@ -83,9 +75,15 @@
                         type="text"
                         class="form-control my-1"
                         [formControlName]="j"
+                        required
                       />
+                      <div class="text-info" *ngIf="errorSugg(i, j)">
+                        Ce champs est obligatoire
+                      </div>
+
                       <button
                         type="button"
+                        *ngIf="verifyChecked(i, j)"
                         class="btn btn-success mx-2"
                         (click)="correctResponse(i, j)"
                       >
@@ -102,6 +100,7 @@
                           />
                         </svg>
                       </button>
+
                       <button
                         type="button"
                         class="btn btn-danger"
@@ -135,7 +134,7 @@
         class="text-center btn btn-primary"
         [disabled]="!postForm.valid"
       >
-        add
+        Add
       </button>
     </p>
   </form>

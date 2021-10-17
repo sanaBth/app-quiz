@@ -20,12 +20,12 @@
     <div class="col-lg-4" *ngFor="let quiz of quizs">
       <h2>Titre de quiz : {{ quiz.quizzTitle }}</h2>
 
-      <div *ngFor="let question of quiz.questions">
+      <div *ngFor="let question of quiz.questions; let i = index">
         <h4>La question est : {{ question.textQuestion }}</h4>
         <div>
           liste des propositions
-          <div *ngFor="let suggestion of question.suggestions; let i = index">
-            <input type="radio" name="i" />{{ suggestion }}<br />
+          <div *ngFor="let suggestion of question.suggestions; let j = index">
+            <input type="radio" [name]="i" />{{ suggestion }}<br />
           </div>
         </div>
       </div>
